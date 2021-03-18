@@ -8,25 +8,53 @@ class adminController extends Controller
 {
     public function profilDes()
     {
-        return view('admin.profilDesa'); 
+        $village = VillageProfiles::latest()->paginate(5);
+
+        return view('admin.profilDesa', compact('admin'))
+            ->with('i',(request()->input('page', 1) -1) *5); 
         
     }
-    public function dataPro()
+
+     public function tambprof(Request $request)
     {
-        return view('admin.dataProduk');
-    }
-    
-    public function tambPro()
-    {
-        return view('admin.tambahProduk');
+        $request->validate([
+            'deskripsi' => 'required',
+            'gambar' => 'required'
+        ]);
+        VillageProfiles::create($request->all());
+        return view('admin.tambahProfil');
     }
 
-    public function ubProfil()
+        public function ubProfil(VillageProfiles $village)
     {
         return view('admin.ubahProfil');
     }
 
-    public function ubProd()
+    public function dataPro()
+    {
+        $product = Products::lates()->paginate(5);
+
+        return view('admin.dataProduk', compact('admin'))
+        ->with('i', (request()->input('page', 1) -1) *5);
+    }
+    
+    public function tambPro(Request $request)
+    {
+        $request->validate([
+            'nama produk' => 'required',
+            'deskripsi produk' =>'required',
+            'harga' => 'required',
+            'gambar' =>'required',
+            'stok' => 'required'
+        ]);
+        Products::create($request->all());
+        return redirect()->route('admin.tambahProduk');
+    }
+   
+
+
+
+    public function ubProd(Products $product)
     {
         return view('admin.ubahProduk');
     }

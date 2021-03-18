@@ -246,6 +246,12 @@
 
     <!-- Main content -->
   <div class="row mb-3">
+    <label for="colFormLabel" style="position: center;" class="col-sm-2 col-form-label">Judul</label>
+  <div class="col-sm-7">
+    <input type="text" class="form-control">
+  </div>
+  </div>
+  <div class="row mb-3">
     <label for="colFormLabel" style="position: center;" class="col-sm-2 col-form-label">Gambar</label>
     <div class="col-sm-7">
        <input class="form-control" type="file" id="formFile">

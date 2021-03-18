@@ -304,27 +304,49 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-              <button type="button" onclick="window.location.href= '{{route('ubah-profil')}}'" class="btn btn-primary">Tambah Profil</button>
+               @if ($errors->any())
+        <div class="alert alert-danger">
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    <form action="{{ route('village.store') }}" method="POST" >
+        @csrf 
+        
+              <button type="button" class="btn btn-primary" data-bind="click: profileDesa.add">Tambah Profil</button>
               <br>
               <br>
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
-                  <tr>
-                    <th>Gambar</th>
-                    <th>Deskripsi</th>
-                    <th>Aksi</th>
-                  </tr>
+                    <tr>
+                      <th>Judul</th>
+                      <th>Gambar</th>
+                      <th>Deskripsi</th>
+                      <th>Aksi</th>
+                    </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td></td>
-                    <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur nam qui ducimus alias? Corrupti adipisci rem velit, minus itaque atque voluptatum eaque. Rem, eaque. Aliquid delectus nostrum repellat dolorum consequuntur.</td>
-                    <td>
-                      <button type="button" onclick="window.location.href= '{{route('ubah-profil')}}'" class="btn btn-primary">Ubah</button>
-                      <br><br>
-                      <button type="button" class="btn btn-warning">Hapus</button>
-                    </td>
-                  </tr>
+                    @foreach ($desas as $desa)
+                    <tr>
+                        <td>{{$desa->Judul}}</td>
+                        <td>{{$desa->Gambar}}</td>
+                        <td>{{$desa->Deskripsi}}</td>
+                        <td>
+                          <button class="btn btn-info" data-bind="click: profileDesa.edit({{$desa->id}})"><i class="fas fa-edit"></i></button>
+                          &nbsp
+                          <button class="btn btn-danger" data-bind="click: profileDesa.delete({{$desa->id}})"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+                <div>
+                  <span>{{ $desas->links() }}</span>
+                </div>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
@@ -336,6 +358,44 @@
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+
+<!-- modal add profile desa -->
+<div id="add-desa-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Tambah Profil Desa</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form id="form-add-desa" method="POST">
+        @csrf
+        <div class="form-group">
+          <label for="desaJudul">Judul</label>
+          <input type="text" class="form-control" id="desaJudul" aria-describedby="Judul" placeholder="Judul" data-bind="value: desa.Judul">
+          <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+        </div>
+        <div class="form-group">
+          <label for="desaGambar">Gambar</label>
+          <input type="file" class="form-control" id="desaGambar" placeholder="Gambar" data-bind="event: {change: $root.uploadImage}">
+        </div>
+        <div class="form-group">
+          <label for="desaDeskripsi">Deskripsi</label>
+          <textarea class="form-control" id="desaDeskripsi" placeholder="Deskripsi" rows="3" data-bind="value: desa.Deskripsi"></textarea>
+        </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bind="click: profileDesa.simpanDesa, visible: viewModel.mode() == 'add'">Simpan</button>
+        <button type="button" class="btn btn-info" data-bind="click: profileDesa.update, visible: viewModel.mode() == 'edit'">Edit</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Keluar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal add profile desa -->
 
 <!-- jQuery -->
 <script src="{{asset('/plugins/jquery/jquery.min.js')}}"></script>
@@ -372,6 +432,12 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{asset('dist/js/pages/dashboard.js')}}"></script>
 <script src="{{asset('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
+<script src="{{asset('plugins/knockoutjs/knockout-3.5.1.js')}}"></script>
+<script src="{{asset('plugins/knockoutjs/knockout.mapping.js')}}"></script>
+
+<!-- main js -->
+<script src="{{ asset('js/profile_desa.js') }}"></script>
+
 <script>
   const tombol = document.querySelectorAll('.btn-warning');
     tombol.addEventListener('click', function () {
@@ -383,7 +449,7 @@
       })
       .then((willDelete) => {
         if (willDelete) {
-          swal("Profile Telah Dihapus", {
+          swal("Produk Telah Dihapus", {
             icon: "success",
           });
         } else {

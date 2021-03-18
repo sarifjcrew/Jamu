@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProfdesaTable extends Migration
+class CreateVillageProfilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateProfdesaTable extends Migration
      */
     public function up()
     {
-        Schema::create('profdesa', function (Blueprint $table) {
+        Schema::create('village_profiles', function (Blueprint $table) {
             $table->id();
+            $table->string('judul');
             $table->string('deskripsi');
             $table->string('gambar');
             $table->timestamps();
@@ -28,6 +29,6 @@ class CreateProfdesaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profdesa');
+        Schema::dropIfExists('village_profiles');
     }
 }

@@ -246,6 +246,12 @@
 
     <!-- Main content -->
   <div class="row mb-3">
+    <label for="colFormLabel" style="position: center;" class="col-sm-2 col-form-label">Judul</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control">
+    </div>
+  </div>
+  <div class="row mb-3">
     <label for="colFormLabel" style="position: center;" class="col-sm-2 col-form-label">Gambar</label>
     <div class="col-sm-7">
        <input class="form-control" type="file" id="formFile">
@@ -257,7 +263,7 @@
       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>  
     </div>
   </div>
-  <button type="button" class="btn btn-primary">Ubah Profile</button>
+  <button type="button" class="btn btn-primary">Tambah Profile</button>
 </div>
     <!-- /.content -->
   </div>
@@ -310,7 +316,7 @@
 <script>
     const tombol = document.querySelector('.btn-primary');
         tombol.addEventListener('click', function () {
-            swal("Profile Berhasil Diubah", "", "success");
+            swal("Profile Berhasil DiTambah", "", "success");
         });
 </script>
 </body>
